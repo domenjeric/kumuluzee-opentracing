@@ -70,6 +70,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.kumuluz.ee</groupId>
+            <artifactId>kumuluzee-cdi-weld</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>io.opentracing</groupId>
             <artifactId>opentracing-util</artifactId>
             <version>${opentracing.version}</version>
