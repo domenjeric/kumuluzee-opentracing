@@ -13,12 +13,26 @@
     <url>https://github.com/domenjeric/kumuluzee-opentracing</url>
     <inceptionYear>2018</inceptionYear>
 
+    <repositories>
+        <repository>
+            <id>sonatype-snapshots</id>
+            <name>Sonatype Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <kumuluzee.version>3.0.0-SNAPSHOT</kumuluzee.version>
+        <kumuluzee.version>3.1.0-SNAPSHOT</kumuluzee.version>
 
         <opentracing.version>0.31.0</opentracing.version>
         <jaegertracing.version>0.31.0</jaegertracing.version>
@@ -73,6 +87,11 @@
             <groupId>com.kumuluz.ee</groupId>
             <artifactId>kumuluzee-cdi-weld</artifactId>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.kumuluz.ee</groupId>
+            <artifactId>kumuluzee-jax-rs-jersey</artifactId>
         </dependency>
 
         <dependency>

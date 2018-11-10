@@ -5,6 +5,8 @@ import com.kumuluz.ee.common.config.EeConfig;
 import com.kumuluz.ee.common.dependencies.*;
 import com.kumuluz.ee.common.wrapper.KumuluzServerWrapper;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -13,9 +15,10 @@ import java.util.logging.Logger;
  * @since 1.0.0
  */
 
-@EeExtensionDef(name = "OpenTracing", group = EeExtensionGroup.LOGS)
+@EeExtensionDef(name = "OpenTracing", group = "OpenTracing")
 @EeComponentDependencies({
-    @EeComponentDependency(EeComponentType.JAX_RS)
+    @EeComponentDependency(EeComponentType.JAX_RS),
+        @EeComponentDependency(EeComponentType.CDI)
 })
 public class OpenTracingExtension implements Extension {
 
@@ -27,7 +30,10 @@ public class OpenTracingExtension implements Extension {
     }
 
     @Override
-    public void load() {
-        log.info("OpenTracing Extension initialized.");
+    public void load() {}
+
+    @Override
+    public List<String> scanLibraries() {
+        return Collections.singletonList("kumuluzee-opentracing");
     }
 }
