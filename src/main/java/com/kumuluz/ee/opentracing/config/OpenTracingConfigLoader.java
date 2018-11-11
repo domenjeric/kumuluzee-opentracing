@@ -24,7 +24,6 @@ public class OpenTracingConfigLoader {
     private static final Logger log = Logger.getLogger(OpenTracingConfig.class.getName());
 
     public OpenTracingConfigLoader() {
-        log.info("Loading OpenTracing config...");
     }
 
     public OpenTracingConfig<?> getConfig() {

@@ -1,6 +1,8 @@
 package com.kumuluz.ee.opentracing.config;
 
 import com.kumuluz.ee.configuration.utils.ConfigurationUtil;
+
+import javax.enterprise.context.ApplicationScoped;
 import java.util.logging.Logger;
 
 /**
@@ -8,6 +10,7 @@ import java.util.logging.Logger;
  * @author Domen Jeric
  * @since 1.0.0
  */
+@ApplicationScoped
 public class JaegerTracingConfig extends OpenTracingConfig<JaegerTracingConfig> {
 
     public static final String TRACER_TITLE = "jaeger";
