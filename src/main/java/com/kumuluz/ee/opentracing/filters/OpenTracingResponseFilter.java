@@ -7,6 +7,7 @@ import com.kumuluz.ee.opentracing.config.OpenTracingConfigLoader;
 import com.kumuluz.ee.opentracing.utils.JaegerTracingUtil;
 import com.kumuluz.ee.opentracing.utils.OpenTracingUtil;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;
@@ -14,6 +15,7 @@ import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 
+@ApplicationScoped
 @Provider
 public class OpenTracingResponseFilter implements ContainerResponseFilter {
 
