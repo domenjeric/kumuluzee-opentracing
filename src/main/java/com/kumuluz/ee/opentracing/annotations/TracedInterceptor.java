@@ -4,6 +4,7 @@ import com.kumuluz.ee.opentracing.utils.JaegerTracingUtil;
 import io.opentracing.Span;
 import io.opentracing.Tracer;
 import io.opentracing.util.GlobalTracer;
+import org.eclipse.microprofile.opentracing.Traced;
 
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
@@ -12,8 +13,13 @@ import java.lang.reflect.Method;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@Traced
+/**
+ * MicroProfile Traced annotation implementation
+ * @author Domen Jeric
+ * @since 1.0.0
+ */
 @Interceptor
+@Traced
 public class TracedInterceptor {
 
     private static final Logger log = Logger.getLogger(JaegerTracingUtil.class.getName());

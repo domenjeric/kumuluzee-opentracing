@@ -36,6 +36,7 @@
 
         <opentracing.version>0.31.0</opentracing.version>
         <jaegertracing.version>0.31.0</jaegertracing.version>
+        <microprofile-opentracing-api.version>1.2.1</microprofile-opentracing-api.version>
     </properties>
 
     <scm>
@@ -98,6 +99,12 @@
             <groupId>io.opentracing</groupId>
             <artifactId>opentracing-util</artifactId>
             <version>${opentracing.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.microprofile.opentracing</groupId>
+            <artifactId>microprofile-opentracing-api</artifactId>
+            <version>${microprofile-opentracing-api.version}</version>
         </dependency>
 
         <dependency>

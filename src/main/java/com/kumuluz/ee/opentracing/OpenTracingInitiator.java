@@ -1,4 +1,4 @@
-package com.kumuluz.ee.opentracing.filters;
+package com.kumuluz.ee.opentracing;
 
 import com.kumuluz.ee.opentracing.config.JaegerTracingConfig;
 import com.kumuluz.ee.opentracing.config.OpenTracingConfig;
@@ -7,29 +7,29 @@ import com.kumuluz.ee.opentracing.utils.JaegerTracingUtil;
 import com.kumuluz.ee.opentracing.utils.OpenTracingUtil;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.Initialized;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.ext.Provider;
-import java.io.IOException;
 
+/**
+ * OpenTracing initiator
+ * @author Domen Jeric
+ * @since 1.0.0
+ */
 @ApplicationScoped
-@Provider
-public class OpenTracingRequestFilter implements ContainerRequestFilter {
+public class OpenTracingInitiator {
 
     @Inject
     private OpenTracingConfigLoader config;
 
     @Inject
-    private OpenTracingUtil<JaegerTracingUtil> jaegerTracer;
+    private JaegerTracingUtil jaegerTracer;
 
-    public void filter(ContainerRequestContext requestContext) throws IOException {
+    private void initialize(@Observes @Initialized(ApplicationScoped.class) Object init) {
         OpenTracingConfig<?> tracerConfig = config.getConfig();
 
         if (tracerConfig instanceof JaegerTracingConfig) {
             jaegerTracer.init();
-            jaegerTracer.startServiceSpan(requestContext, tracerConfig.getServiceName());
         }
     }
-
 }
