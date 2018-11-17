@@ -2,6 +2,7 @@ package com.kumuluz.ee.opentracing.config;
 
 import com.kumuluz.ee.configuration.utils.ConfigurationUtil;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import java.util.logging.Logger;
 
@@ -22,7 +23,8 @@ public class JaegerTracingConfig extends OpenTracingConfig<JaegerTracingConfig> 
 
     private static final Logger log = Logger.getLogger(JaegerTracingConfig.class.getName());
 
-    public JaegerTracingConfig() {
+    @PostConstruct
+    public void init() {
         this.setReporterHost().setReporterPort();
         log.info(String.format("Jaeger config loaded: %s:%d", this.getReporterHost(), this.getReporterPort()));
     }

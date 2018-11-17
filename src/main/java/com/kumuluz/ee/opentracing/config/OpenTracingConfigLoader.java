@@ -23,9 +23,6 @@ public class OpenTracingConfigLoader {
 
     private static final Logger log = Logger.getLogger(OpenTracingConfig.class.getName());
 
-    public OpenTracingConfigLoader() {
-    }
-
     public OpenTracingConfig<?> getConfig() {
         String selectedTracer = ConfigurationUtil.getInstance()
                 .get(CONFIG_PREFIX + "selected-tracer")
