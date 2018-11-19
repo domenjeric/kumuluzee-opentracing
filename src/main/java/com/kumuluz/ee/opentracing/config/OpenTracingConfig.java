@@ -19,4 +19,10 @@ public abstract class OpenTracingConfig <T extends OpenTracingConfig<?>> {
                 .get(OpenTracingConfigLoader.CONFIG_PREFIX + "service-name")
                 .orElse(DEFAULT_SERVICE_NAME);
     }
+
+    public String getSelectedOperationNameProvider() {
+        return ConfigurationUtil.getInstance()
+                .get(OpenTracingConfigLoader.CONFIG_PREFIX + "server.operation-name-provider")
+                .orElse("class-method");
+    }
 }
