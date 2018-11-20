@@ -47,6 +47,7 @@ public class OpenTracingClientRequestFilter implements ClientRequestFilter {
                     .withTag(Tags.SPAN_KIND.getKey(), Tags.SPAN_KIND_CLIENT)
                     .withTag(Tags.HTTP_METHOD.getKey(), requestContext.getMethod())
                     .withTag(Tags.HTTP_URL.getKey(),  uri != null ? uri.toURL().toString() : "")
+                    .withTag(Tags.COMPONENT.getKey(), "jaxrs")
                     .withTag(Tags.PEER_PORT.getKey(), uri != null ? uri.getPort() : 0)
                     .withTag(Tags.PEER_HOSTNAME.getKey(), uri != null ? uri.getHost() : "");
 

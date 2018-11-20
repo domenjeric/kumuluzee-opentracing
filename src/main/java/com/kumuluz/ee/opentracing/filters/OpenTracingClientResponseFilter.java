@@ -1,6 +1,7 @@
 package com.kumuluz.ee.opentracing.filters;
 
 import com.kumuluz.ee.opentracing.utils.OpenTracingUtil;
+import com.kumuluz.ee.opentracing.utils.SpanErrorLogger;
 import io.opentracing.Span;
 import io.opentracing.tag.Tags;
 
@@ -9,7 +10,6 @@ import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientResponseContext;
 import javax.ws.rs.client.ClientResponseFilter;
 import javax.ws.rs.ext.Provider;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,10 +31,16 @@ public class OpenTracingClientResponseFilter implements ClientResponseFilter {
 
             Span span = (Span) requestContext.getProperty(OpenTracingUtil.OPENTRACING_SPAN_TITLE);
             span.setTag(Tags.HTTP_STATUS.getKey(), responseContext.getStatus());
+
+            if (responseContext.getStatus() >= 400) {
+                SpanErrorLogger.addExceptionLogs(span, responseContext.getEntityStream());
+            }
+
             span.finish();
 
         } catch(Exception exception) {
             log.log(Level.SEVERE,"Exception occured when trying to finish client span.", exception);
         }
     }
+
 }

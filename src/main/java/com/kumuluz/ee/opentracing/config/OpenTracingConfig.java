@@ -2,6 +2,8 @@ package com.kumuluz.ee.opentracing.config;
 
 import com.kumuluz.ee.configuration.utils.ConfigurationUtil;
 
+import java.util.regex.Pattern;
+
 /**
  * OpenTracing config interface
  * @author Domen Jeric
@@ -24,5 +26,13 @@ public abstract class OpenTracingConfig <T extends OpenTracingConfig<?>> {
         return ConfigurationUtil.getInstance()
                 .get(OpenTracingConfigLoader.CONFIG_PREFIX + "server.operation-name-provider")
                 .orElse("class-method");
+    }
+
+    public Pattern getSkipPattern() {
+        String skipPattern = ConfigurationUtil.getInstance()
+                .get(OpenTracingConfigLoader.CONFIG_PREFIX + "server.skip-pattern")
+                .orElse(null);
+
+        return skipPattern != null ? Pattern.compile(skipPattern) : null;
     }
 }

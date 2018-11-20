@@ -1,6 +1,8 @@
 package com.kumuluz.ee.opentracing.filters;
 
 
+import com.kumuluz.ee.opentracing.config.OpenTracingConfig;
+import com.kumuluz.ee.opentracing.config.OpenTracingConfigLoader;
 import com.kumuluz.ee.opentracing.utils.OpenTracingUtil;
 import com.kumuluz.ee.opentracing.adapters.ServerHeaderExtractAdapter;
 import com.kumuluz.ee.opentracing.utils.OperationNameUtil;
@@ -20,6 +22,7 @@ import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 /**
  * Jax-rs server request filter
@@ -36,9 +39,19 @@ public class OpenTracingServerRequestFilter implements ContainerRequestFilter {
     @Inject
     OperationNameUtil operationNameUtil;
 
+    @Inject
+    OpenTracingConfigLoader config;
+
     private static final Logger log = Logger.getLogger(OpenTracingServerRequestFilter.class.getName());
 
     public void filter(ContainerRequestContext requestContext) {
+
+        OpenTracingConfig<?> tracerConfig = config.getConfig();
+        Pattern skipPattern = tracerConfig.getSkipPattern();
+
+        if (skipPattern != null && pathMatchesSkipPattern(requestContext, skipPattern)) {
+            return;
+        }
 
         String operationName = operationNameUtil.operationName(requestContext, resourceInfo);
 
@@ -66,6 +79,17 @@ public class OpenTracingServerRequestFilter implements ContainerRequestFilter {
         } catch(Exception exception) {
             log.log(Level.SEVERE,"Exception occured when trying to start server span.", exception);
         }
+    }
+
+
+    private boolean pathMatchesSkipPattern(ContainerRequestContext requestContext, Pattern skipPattern) {
+        String path = requestContext.getUriInfo().getPath();
+
+        if (path.charAt(0) != '/') {
+            path = "/" + path;
+        }
+
+        return skipPattern.matcher(path).matches();
     }
 
 }
