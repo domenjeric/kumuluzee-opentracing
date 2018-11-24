@@ -22,11 +22,11 @@ import java.util.logging.Logger;
 })
 public class OpenTracingExtension implements Extension {
 
-    private static final Logger log = Logger.getLogger(OpenTracingExtension.class.getName());
+    private static final Logger LOG = Logger.getLogger(OpenTracingExtension.class.getName());
 
     @Override
     public void init(KumuluzServerWrapper kumuluzServerWrapper, EeConfig eeConfig) {
-        log.info("Initializing OpenTracing Extension.");
+        LOG.info("Initializing OpenTracing Extension.");
     }
 
     @Override

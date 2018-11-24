@@ -1,12 +1,9 @@
 package com.kumuluz.ee.opentracing.config;
 
 import com.kumuluz.ee.configuration.utils.ConfigurationUtil;
-import com.kumuluz.ee.opentracing.OpenTracingExtension;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import java.util.Arrays;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 /**
@@ -21,7 +18,7 @@ public class OpenTracingConfigLoader {
 
     private static final String[] AVAILABLE_TRACERS = {JaegerTracingConfig.TRACER_TITLE};
 
-    private static final Logger log = Logger.getLogger(OpenTracingConfig.class.getName());
+    private static final Logger LOG = Logger.getLogger(OpenTracingConfig.class.getName());
 
     public OpenTracingConfig<?> getConfig() {
         String selectedTracer = ConfigurationUtil.getInstance()
@@ -29,7 +26,7 @@ public class OpenTracingConfigLoader {
                 .orElse("");
 
         if (selectedTracer.length() == 0 || Arrays.stream(AVAILABLE_TRACERS).noneMatch(selectedTracer::equals)) {
-            log.severe("Selected tracer is not available.");
+            LOG.severe("Selected tracer is not available.");
             return null;
         }
 

@@ -33,7 +33,7 @@ public class TracedInterceptor {
     @Inject
     OperationNameUtil operationNameUtil;
 
-    private static final Logger log = Logger.getLogger(JaegerTracingUtil.class.getName());
+    private static final Logger LOG = Logger.getLogger(JaegerTracingUtil.class.getName());
 
     @AroundInvoke
     public Object trace(InvocationContext context) throws Exception {
@@ -64,7 +64,7 @@ public class TracedInterceptor {
 
             return toReturn;
         } catch(Exception exception) {
-            log.log(Level.SEVERE,"Exception occured when trying to create method span.", exception);
+            LOG.log(Level.SEVERE,"Exception occured when trying to create method span.", exception);
         }
 
         return context.proceed();

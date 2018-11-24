@@ -43,7 +43,7 @@ public class OpenTracingServerRequestFilter implements ContainerRequestFilter {
     @Inject
     OpenTracingConfigLoader config;
 
-    private static final Logger log = Logger.getLogger(OpenTracingServerRequestFilter.class.getName());
+    private static final Logger LOG = Logger.getLogger(OpenTracingServerRequestFilter.class.getName());
 
     public void filter(ContainerRequestContext requestContext) {
 
@@ -83,7 +83,7 @@ public class OpenTracingServerRequestFilter implements ContainerRequestFilter {
                     spanBuilder.startActive(true).span());
 
         } catch(Exception exception) {
-            log.log(Level.SEVERE,"Exception occured when trying to start server span.", exception);
+            LOG.log(Level.SEVERE,"Exception occured when trying to start server span.", exception);
         }
     }
 

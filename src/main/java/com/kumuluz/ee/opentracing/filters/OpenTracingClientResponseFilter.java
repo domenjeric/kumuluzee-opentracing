@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 @Provider
 public class OpenTracingClientResponseFilter implements ClientResponseFilter {
 
-    private static final Logger log = Logger.getLogger(OpenTracingClientResponseFilter.class.getName());
+    private static final Logger LOG = Logger.getLogger(OpenTracingClientResponseFilter.class.getName());
 
     @Override
     public void filter(ClientRequestContext requestContext, ClientResponseContext responseContext) {
@@ -39,7 +39,7 @@ public class OpenTracingClientResponseFilter implements ClientResponseFilter {
             span.finish();
 
         } catch(Exception exception) {
-            log.log(Level.SEVERE,"Exception occured when trying to finish client span.", exception);
+            LOG.log(Level.SEVERE,"Exception occured when trying to finish client span.", exception);
         }
     }
 

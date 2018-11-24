@@ -4,22 +4,11 @@ package com.kumuluz.ee.opentracing.utils;
 import com.kumuluz.ee.opentracing.config.JaegerTracingConfig;
 import io.jaegertracing.Configuration;
 import io.jaegertracing.internal.samplers.ConstSampler;
-import io.opentracing.Span;
-import io.opentracing.SpanContext;
 import io.opentracing.Tracer;
-import io.opentracing.propagation.Format;
-import io.opentracing.propagation.TextMapExtractAdapter;
-import io.opentracing.tag.Tags;
 import io.opentracing.util.GlobalTracer;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.container.ContainerResponseContext;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,7 +23,7 @@ public class JaegerTracingUtil implements OpenTracingUtil {
     @Inject
     private JaegerTracingConfig jaegerConfig;
 
-    private static final Logger log = Logger.getLogger(JaegerTracingUtil.class.getName());
+    private static final Logger LOG = Logger.getLogger(JaegerTracingUtil.class.getName());
 
     @Override
     public void init() {
@@ -59,7 +48,7 @@ public class JaegerTracingUtil implements OpenTracingUtil {
             GlobalTracer.register(tracer);
 
         } catch(Exception exception) {
-            log.log(Level.SEVERE,"Exception occured when trying to initialize JaegerTracer.", exception);
+            LOG.log(Level.SEVERE,"Exception occured when trying to initialize JaegerTracer.", exception);
         }
 
     }

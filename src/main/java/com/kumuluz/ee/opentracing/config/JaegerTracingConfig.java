@@ -21,12 +21,12 @@ public class JaegerTracingConfig extends OpenTracingConfig<JaegerTracingConfig> 
     private String reporterHost;
     private int reporterPort;
 
-    private static final Logger log = Logger.getLogger(JaegerTracingConfig.class.getName());
+    private static final Logger LOG = Logger.getLogger(JaegerTracingConfig.class.getName());
 
     @PostConstruct
     public void init() {
         this.setReporterHost().setReporterPort();
-        log.info(String.format("Jaeger config loaded: %s:%d", this.getReporterHost(), this.getReporterPort()));
+        LOG.info(String.format("Jaeger config loaded: %s:%d", this.getReporterHost(), this.getReporterPort()));
     }
 
     @Override

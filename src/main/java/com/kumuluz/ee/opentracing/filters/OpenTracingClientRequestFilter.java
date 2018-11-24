@@ -1,24 +1,17 @@
 package com.kumuluz.ee.opentracing.filters;
 
 import com.kumuluz.ee.opentracing.adapters.ClientHeaderInjectAdapter;
-import com.kumuluz.ee.opentracing.adapters.ServerHeaderExtractAdapter;
 import com.kumuluz.ee.opentracing.utils.OpenTracingUtil;
 import io.opentracing.Span;
-import io.opentracing.SpanContext;
 import io.opentracing.Tracer;
 import io.opentracing.propagation.Format;
 import io.opentracing.tag.Tags;
 import io.opentracing.util.GlobalTracer;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientRequestFilter;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
-import java.io.IOException;
 import java.net.URI;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,7 +25,7 @@ import java.util.logging.Logger;
 @Provider
 public class OpenTracingClientRequestFilter implements ClientRequestFilter {
 
-    private static final Logger log = Logger.getLogger(OpenTracingClientRequestFilter.class.getName());
+    private static final Logger LOG = Logger.getLogger(OpenTracingClientRequestFilter.class.getName());
 
     @Override
     public void filter(ClientRequestContext requestContext) {
@@ -58,7 +51,7 @@ public class OpenTracingClientRequestFilter implements ClientRequestFilter {
             requestContext.setProperty(OpenTracingUtil.OPENTRACING_SPAN_TITLE, span);
 
         } catch(Exception exception) {
-            log.log(Level.SEVERE,"Exception occured when trying to start client span.", exception);
+            LOG.log(Level.SEVERE,"Exception occured when trying to start client span.", exception);
         }
     }
 }

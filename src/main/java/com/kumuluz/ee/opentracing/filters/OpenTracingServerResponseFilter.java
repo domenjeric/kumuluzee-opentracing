@@ -8,12 +8,10 @@ import io.opentracing.Span;
 import io.opentracing.tag.Tags;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.ext.Provider;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,7 +24,7 @@ import java.util.logging.Logger;
 @Provider
 public class OpenTracingServerResponseFilter implements ContainerResponseFilter {
 
-    private static final Logger log = Logger.getLogger(OpenTracingServerResponseFilter.class.getName());
+    private static final Logger LOG = Logger.getLogger(OpenTracingServerResponseFilter.class.getName());
 
     @Override
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) {
@@ -47,7 +45,7 @@ public class OpenTracingServerResponseFilter implements ContainerResponseFilter 
             span.finish();
 
         } catch(Exception exception) {
-            log.log(Level.SEVERE,"Exception occured when trying to finish server span.", exception);
+            LOG.log(Level.SEVERE,"Exception occured when trying to finish server span.", exception);
         }
     }
 }
