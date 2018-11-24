@@ -3,9 +3,11 @@ package com.kumuluz.ee.opentracing.filters;
 
 import com.kumuluz.ee.opentracing.config.OpenTracingConfig;
 import com.kumuluz.ee.opentracing.config.OpenTracingConfigLoader;
+import com.kumuluz.ee.opentracing.utils.ExplicitTracingUtil;
 import com.kumuluz.ee.opentracing.utils.OpenTracingUtil;
 import com.kumuluz.ee.opentracing.adapters.ServerHeaderExtractAdapter;
 import com.kumuluz.ee.opentracing.utils.OperationNameUtil;
+import com.kumuluz.ee.opentracing.utils.RequestContextHolder;
 import io.opentracing.SpanContext;
 import io.opentracing.Tracer;
 import io.opentracing.propagation.Format;
@@ -19,7 +21,6 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.ext.Provider;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -46,10 +47,13 @@ public class OpenTracingServerRequestFilter implements ContainerRequestFilter {
 
     public void filter(ContainerRequestContext requestContext) {
 
+        RequestContextHolder.setRequestContextHolder(requestContext);
+
         OpenTracingConfig<?> tracerConfig = config.getConfig();
         Pattern skipPattern = tracerConfig.getSkipPattern();
 
-        if (skipPattern != null && pathMatchesSkipPattern(requestContext, skipPattern)) {
+        if (skipPattern != null && ExplicitTracingUtil.pathMatchesSkipPattern(requestContext.getUriInfo(), skipPattern)
+                || ExplicitTracingUtil.tracingDisabled(resourceInfo)) {
             return;
         }
 
@@ -60,7 +64,8 @@ public class OpenTracingServerRequestFilter implements ContainerRequestFilter {
 
         try {
 
-            SpanContext parentSpan = tracer.extract(Format.Builtin.HTTP_HEADERS, new ServerHeaderExtractAdapter(requestContext.getHeaders()));
+            SpanContext parentSpan = tracer.extract(Format.Builtin.HTTP_HEADERS,
+                    new ServerHeaderExtractAdapter(requestContext.getHeaders()));
             spanBuilder = tracer.buildSpan(operationName);
 
             if (parentSpan != null) {
@@ -74,22 +79,12 @@ public class OpenTracingServerRequestFilter implements ContainerRequestFilter {
                             requestContext.getUriInfo().getBaseUri().toString() + requestContext.getUriInfo().getPath())
                     .withTag(Tags.COMPONENT.getKey(), "jaxrs");
 
-            requestContext.setProperty(OpenTracingUtil.OPENTRACING_SPAN_TITLE, spanBuilder.startActive(true).span());
+            requestContext.setProperty(OpenTracingUtil.OPENTRACING_SPAN_TITLE,
+                    spanBuilder.startActive(true).span());
 
         } catch(Exception exception) {
             log.log(Level.SEVERE,"Exception occured when trying to start server span.", exception);
         }
-    }
-
-
-    private boolean pathMatchesSkipPattern(ContainerRequestContext requestContext, Pattern skipPattern) {
-        String path = requestContext.getUriInfo().getPath();
-
-        if (path.charAt(0) != '/') {
-            path = "/" + path;
-        }
-
-        return skipPattern.matcher(path).matches();
     }
 
 }
