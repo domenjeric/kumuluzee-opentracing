@@ -4,12 +4,14 @@ import com.kumuluz.ee.opentracing.utils.OpenTracingUtil;
 import com.kumuluz.ee.opentracing.utils.SpanErrorLogger;
 import io.opentracing.Span;
 import io.opentracing.tag.Tags;
+import org.apache.commons.io.IOUtils;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientResponseContext;
 import javax.ws.rs.client.ClientResponseFilter;
 import javax.ws.rs.ext.Provider;
+import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,7 +35,7 @@ public class OpenTracingClientResponseFilter implements ClientResponseFilter {
             span.setTag(Tags.HTTP_STATUS.getKey(), responseContext.getStatus());
 
             if (responseContext.getStatus() >= 400) {
-                SpanErrorLogger.addExceptionLogs(span, responseContext.getEntityStream());
+                SpanErrorLogger.addExceptionLogs(span, IOUtils.toString(responseContext.getEntityStream(), "UTF-8"));
             }
 
             span.finish();

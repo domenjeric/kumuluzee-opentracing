@@ -9,6 +9,7 @@ import io.opentracing.Tracer;
 import io.opentracing.util.GlobalTracer;
 import org.eclipse.microprofile.opentracing.Traced;
 
+import javax.annotation.Priority;
 import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
@@ -25,6 +26,7 @@ import java.util.regex.Pattern;
  */
 @Interceptor
 @Traced
+@Priority(Interceptor.Priority.APPLICATION)
 public class TracedInterceptor {
 
     @Inject
