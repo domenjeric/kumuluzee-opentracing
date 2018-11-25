@@ -8,7 +8,7 @@ KumuluzEE OpenTracing extension provides an easy way to take advantage of distri
 
 ## Usage 
 You can enable KumuluzEE OpenTracing extension by adding the following dependency:
-```
+```xml
 <dependency>
     <groupId>com.kumuluz.ee.opentracing</groupId>
     <artifactId>kumuluzee-opentracing</artifactId>
@@ -20,7 +20,7 @@ Please refer to [KumuluzEE readme]( https://github.com/kumuluz/kumuluzee/) for m
 
 ## Configuration
 Here is an example configuration. Currently only Jaeger tracing is supported.
-```
+```yaml
 kumuluzee:
   opentracing:
     service-name: Service Name
@@ -36,7 +36,7 @@ kumuluzee:
 
 ## Tracing server requests
 The provided filters should be added to the JAX-RS application:
-```
+```java
 @ApplicationPath("v1")
 public class CustomerApplication extends Application {
     
@@ -69,7 +69,7 @@ to class or method.
 
 ### Accessing configured tracer
 The configured tracer object can be accessed by injecting Tracer class:
-```
+```java
 @Inject
 io.opentracing.Tracer configuredTracer;
 ```
@@ -78,7 +78,7 @@ io.opentracing.Tracer configuredTracer;
 ## Tracing client requests
 To enable JAX-RS client tracing, client filters should be 
 added:
-```
+```java
 Client httpClient = ClientBuilder.newBuilder()
                 .register(OpenTracingClientRequestFilter.class)
                 .register(OpenTracingClientResponseFilter.class)
