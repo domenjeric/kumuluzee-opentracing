@@ -18,9 +18,9 @@ public class ExplicitTracingUtil {
 
     public static boolean tracingDisabled(ResourceInfo resourceInfo) {
         Traced tracedAnnotation =
-                resourceInfo.getResourceClass().isAnnotationPresent(Traced.class) ?
-                        resourceInfo.getResourceClass().getAnnotation(Traced.class) :
-                        resourceInfo.getResourceMethod().getAnnotation(Traced.class);
+                resourceInfo.getResourceMethod().isAnnotationPresent(Traced.class) ?
+                        resourceInfo.getResourceMethod().getAnnotation(Traced.class) :
+                        resourceInfo.getResourceClass().getAnnotation(Traced.class);
 
         return tracedAnnotation != null && !tracedAnnotation.value();
     }
