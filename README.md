@@ -34,31 +34,8 @@ kumuluzee:
       skip-pattern: /openapi.*|/health.*
 ```
 
-## Tracing server requests
-The provided filters should be added to the JAX-RS application:
-```java
-@ApplicationPath("v1")
-public class CustomerApplication extends Application {
-    
-    @Override
-    public Set<Class<?>> getClasses() {
-
-        Set<Class<?>> classes = new HashSet<>();
-
-        //OpenTracing JAX-RS filters
-        classes.add(OpenTracingServerRequestFilter.class);
-        classes.add(OpenTracingServerResponseFilter.class);
-
-        //resources
-        classes.add(CustomerResource.class);
-
-        return classes;
-    }
-}
-```
-
 ### Tracing with no code instrumentation
-Tracing is automatically enabled by adding KumuluzEE OpenTracing extension dependency and JAX-RS filters.
+Tracing is automatically enabled by adding KumuluzEE OpenTracing extension dependency.
 
 ### Tracing with explicit code instrumentation
 There is `@Traced` annotation available to define explicit Span creation. 
