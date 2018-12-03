@@ -7,11 +7,11 @@ KumuluzEE OpenTracing extension provides an easy way to take advantage of distri
 
 
 ## Usage 
-You can enable KumuluzEE OpenTracing extension by adding the following dependency:
+You can enable KumuluzEE OpenTracing extension by adding the following dependency. Currently only Jaeger tracing is supported.
 ```xml
 <dependency>
     <groupId>com.kumuluz.ee.opentracing</groupId>
-    <artifactId>kumuluzee-opentracing</artifactId>
+    <artifactId>kumuluzee-opentracing-jaeger</artifactId>
     <version>${kumuluzee-opentracing.version}</version>
 </dependency>
 ```
@@ -19,16 +19,12 @@ CDI and JAX-RS dependencies are prerequisites.
 Please refer to [KumuluzEE readme]( https://github.com/kumuluz/kumuluzee/) for more information.
 
 ## Configuration
-Here is an example configuration. Currently only Jaeger tracing is supported.
+Here is an example configuration.
 ```yaml
 kumuluzee:
   opentracing:
-    service-name: Service Name
-    selected-tracer: jaeger
-    available-tracers:
-      jaeger:
-        reporter_host: localhost
-        reporter_port: 5775
+    reporter_host: localhost
+    reporter_port: 5775
     server:
       operation-name-provider: http-path
       skip-pattern: /openapi.*|/health.*

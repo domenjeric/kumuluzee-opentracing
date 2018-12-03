@@ -2,7 +2,10 @@ package com.kumuluz.ee.opentracing;
 
 import com.kumuluz.ee.common.Extension;
 import com.kumuluz.ee.common.config.EeConfig;
-import com.kumuluz.ee.common.dependencies.*;
+import com.kumuluz.ee.common.dependencies.EeComponentDependencies;
+import com.kumuluz.ee.common.dependencies.EeComponentDependency;
+import com.kumuluz.ee.common.dependencies.EeComponentType;
+import com.kumuluz.ee.common.dependencies.EeExtensionDef;
 import com.kumuluz.ee.common.wrapper.KumuluzServerWrapper;
 
 import java.util.Collections;
@@ -34,6 +37,6 @@ public class OpenTracingExtension implements Extension {
 
     @Override
     public List<String> scanLibraries() {
-        return Collections.singletonList("kumuluzee-opentracing");
+        return Collections.singletonList("kumuluzee-opentracing-common");
     }
 }
