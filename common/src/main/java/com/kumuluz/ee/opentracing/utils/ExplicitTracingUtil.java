@@ -5,6 +5,7 @@ import org.eclipse.microprofile.opentracing.Traced;
 import javax.interceptor.InvocationContext;
 import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.UriInfo;
+import java.lang.reflect.Method;
 import java.util.regex.Pattern;
 
 /**
@@ -30,9 +31,13 @@ public class ExplicitTracingUtil {
 
     public static Traced getAnnotation(InvocationContext context) {
         Class<?> clazz = context.getTarget().getClass().getSuperclass();
-        return context.getMethod().isAnnotationPresent(Traced.class) ?
-                        context.getMethod().getAnnotation(Traced.class) :
-                        clazz.getAnnotation(Traced.class);
+        return getAnnotation(clazz, context.getMethod());
+    }
+
+    public static Traced getAnnotation(Class<?> clazz, Method method) {
+        return method.isAnnotationPresent(Traced.class) ?
+                method.getAnnotation(Traced.class) :
+                clazz.getAnnotation(Traced.class);
     }
 
     public static boolean pathMatchesSkipPattern(UriInfo uriInfo, Pattern skipPattern) {

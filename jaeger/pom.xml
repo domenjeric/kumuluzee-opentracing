@@ -34,5 +34,17 @@
             <groupId>com.kumuluz.ee.opentracing</groupId>
             <artifactId>kumuluzee-opentracing-common</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.kumuluz.ee</groupId>
+            <artifactId>kumuluzee-micro-profile</artifactId>
+            <version>${kumuluzee-microptofile.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.kumuluz.ee.config</groupId>
+            <artifactId>kumuluzee-config-mp</artifactId>
+            <version>${kumuluzee-config.version}</version>
+        </dependency>
     </dependencies>
 </project>

@@ -12,11 +12,20 @@ import javax.enterprise.inject.Produces;
  * @author Domen Jeric
  * @since 1.0.0
  */
+@ApplicationScoped
 public class TracerProducer {
+    private Tracer tracer;
+
+    public void setTracer(Tracer tracer) {
+        this.tracer = tracer;
+    }
 
     @Produces
-    @ApplicationScoped
     public Tracer produceTracer() {
+        if (tracer != null) {
+            return tracer;
+        }
+
         return GlobalTracer.get();
     }
 }

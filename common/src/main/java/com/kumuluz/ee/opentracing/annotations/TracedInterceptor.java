@@ -14,6 +14,7 @@ import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.Response;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -42,24 +43,28 @@ public class TracedInterceptor {
         Pattern skipPattern = tracerConfig.getSkipPattern();
         ContainerRequestContext requestContext = RequestContextHolder.getRequestContext();
 
-        if (ExplicitTracingUtil.tracingDisabled(context) ||
-                requestContext != null && ExplicitTracingUtil.pathMatchesSkipPattern(requestContext.getUriInfo(), skipPattern)) {
+        if (requestContext == null ||
+                ExplicitTracingUtil.tracingDisabled(context) ||
+                ExplicitTracingUtil.pathMatchesSkipPattern(requestContext.getUriInfo(), skipPattern)) {
             return context.proceed();
         }
 
         Tracer tracer = GlobalTracer.get();
-        Span parentSpan = tracer.activeSpan();
+        Span span = tracer.activeSpan();
         String operationName = operationNameUtil.operationNameExplicitTracing(requestContext, context);
 
+        //Do not create child span if JAX-RS resource
+        if (!(context.getMethod().getGenericReturnType() instanceof Response)) {
+            span = tracer.buildSpan(operationName).asChildOf(span).startActive(true).span();
+        }
 
-        try (Scope scope = tracer.buildSpan(operationName).asChildOf(parentSpan).startActive(true)){
-
+        try {
             Object toReturn = null;
 
             try {
                 toReturn = context.proceed();
             } catch (Exception e) {
-                SpanErrorLogger.addExceptionLogs(scope.span(), e);
+                SpanErrorLogger.addExceptionLogs(span, e);
             }
 
             return toReturn;

@@ -1,8 +1,12 @@
 package com.kumuluz.ee.opentracing.config;
 
-import com.kumuluz.ee.configuration.utils.ConfigurationUtil;
+import org.eclipse.microprofile.config.Config;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import java.util.Arrays;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 /**
@@ -12,27 +16,29 @@ import java.util.regex.Pattern;
  */
 @ApplicationScoped
 public class OpenTracingConfig {
+    public static final String CONFIG_PREFIX = "mp.opentracing.";
 
-    private static final String DEFAULT_SERVICE_NAME = "KumuluzEE Project";
-    public static final String CONFIG_PREFIX = "kumuluzee.opentracing.";
+    @Inject
+    @ConfigProperty(name = "kumuluzee.name")
+    private Optional<String> serviceName;
+
+    @Inject
+    @ConfigProperty(name = CONFIG_PREFIX + "server.operation-name-provider")
+    private Optional<String> operationNameProvider;
+
+    @Inject
+    @ConfigProperty(name = CONFIG_PREFIX + "server.skip-pattern")
+    private Optional<String> skipPattern;
 
     public String getServiceName() {
-        return ConfigurationUtil.getInstance()
-                .get("kumuluzee.name")
-                .orElse(DEFAULT_SERVICE_NAME);
+        return serviceName.orElse("KumuluzEE project");
     }
 
     public String getSelectedOperationNameProvider() {
-        return ConfigurationUtil.getInstance()
-                .get(CONFIG_PREFIX + "server.operation-name-provider")
-                .orElse("class-method");
+        return operationNameProvider.orElse("class-method");
     }
 
     public Pattern getSkipPattern() {
-        String skipPattern = ConfigurationUtil.getInstance()
-                .get(CONFIG_PREFIX + "server.skip-pattern")
-                .orElse(null);
-
-        return skipPattern != null ? Pattern.compile(skipPattern) : null;
+        return Pattern.compile(skipPattern.orElse(""));
     }
 }

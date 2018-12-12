@@ -21,13 +21,13 @@ Please refer to [KumuluzEE readme]( https://github.com/kumuluz/kumuluzee/) for m
 ## Configuration
 Here is an example configuration.
 ```yaml
-kumuluzee:
+mp:
   opentracing:
-    reporter_host: localhost
-    reporter_port: 5775
+    reporter-host: localhost
+    reporter-port: 5775
     server:
       operation-name-provider: http-path
-      skip-pattern: /openapi.*|/health.*
+      skip-pattern: opentracing
 ```
 
 ### Tracing with no code instrumentation

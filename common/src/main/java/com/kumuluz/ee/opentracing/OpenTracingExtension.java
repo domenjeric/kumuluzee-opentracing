@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 @EeExtensionDef(name = "OpenTracing", group = "OpenTracing")
 @EeComponentDependencies({
     @EeComponentDependency(EeComponentType.JAX_RS),
-        @EeComponentDependency(EeComponentType.CDI)
+    @EeComponentDependency(EeComponentType.CDI)
 })
 public class OpenTracingExtension implements Extension {
 

@@ -46,6 +46,12 @@ public class OperationNameUtil {
     private String operationName(ContainerRequestContext requestContext, Class<?> clazz, Method method) {
         String operationNameProvider = this.operationNameProvider();
 
+        Traced tracedAnnotation = ExplicitTracingUtil.getAnnotation(clazz, method);
+
+        if (tracedAnnotation != null && !tracedAnnotation.operationName().equals("")) {
+            return tracedAnnotation.operationName();
+        }
+
         if (operationNameProvider != null && operationNameProvider.equals("class-method")) {
             return this.operationNameClassMethod(requestContext, clazz, method);
         }
@@ -58,12 +64,12 @@ public class OperationNameUtil {
     }
 
     private String operationNameClassMethod(ContainerRequestContext requestContext, Class<?> clazz, Method method) {
-        return requestContext.getMethod() + ": " + clazz.getName() + "." + method.getName();
+        return requestContext.getMethod() + ":" + clazz.getName() + "." + method.getName();
     }
 
 
     private String operationNameHttpPath(ContainerRequestContext requestContext) {
-        return requestContext.getMethod() + ": /" + requestContext.getUriInfo().getPath();
+        return requestContext.getMethod() + ":/" + requestContext.getUriInfo().getPath();
     }
 
 }
